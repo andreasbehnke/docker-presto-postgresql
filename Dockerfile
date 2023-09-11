@@ -1,18 +1,19 @@
 FROM amazoncorretto:8
 
 RUN yum -y update &&\
-    yum -y install tar gzip
+    yum -y install tar gzip less
 
 ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-server/0.283/presto-server-0.283.tar.gz /tmp/presto.tar.gz
-
 RUN mkdir -p /opt/presto &&\
     tar -zxvf /tmp/presto.tar.gz -C /opt/presto &&\
     rm /tmp/presto.tar.gz
-
 ENV HOME /opt/presto/presto-server-0.283
 
-WORKDIR $HOME
+ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/0.283/presto-cli-0.283-executable.jar $HOME/presto
+RUN chmod +x $HOME/presto
+ENV PATH="$PATH:/opt/presto/presto-server-0.283"
 
+WORKDIR $HOME
 # copy default set of config
 COPY config/ $HOME/etc/
 # adding the config mounting point

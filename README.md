@@ -12,3 +12,6 @@ to access the presto container at `docker-host:8080`.
 
 Note the databases themselves are also exposing the according default ports. So
 you can try to insert data into them.
+
+Starting presto-cli with
+docker exec -it docker-presto-postgresql-presto-1 presto
